@@ -1,0 +1,800 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    overflow: visible;
+    font-family: Arial, Helvetica, sans-serif;
+}
+*::before{
+    margin: 0px;
+    padding: 0px;
+}
+*::after{
+    margin: 0px;
+    padding: 0px;
+}
+#heading_title{
+    width: 100%;
+    text-align: center;
+    margin:25px auto 250px auto;
+    font-size: 32pt;
+    font-weight: bold;
+}
+.data{
+    position: absolute;
+    top: -50px;
+    right: -100px;
+    min-width: 120px;
+    min-height: 50px;
+    background: #ececec;
+    display: none;
+    text-align: center;
+    cursor: auto;
+    z-index: 15;
+}
+.component{
+    cursor: pointer;
+    padding: 0px;
+    margin: 0px;
+    z-index: 9;
+    background: white;
+}
+.voltage{
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+.voltage span{
+    font-size: 14pt;
+}
+.voltage:hover>.data{
+    display: block;
+}
+.voltage.flip-right{
+    transform: rotate(90deg);
+}
+.voltage.flip-right > h4{
+    transform: rotate(-90deg);
+}
+.voltage.flip-right>.data{
+    transform: rotate(-90deg);
+    right: 50px;
+    top: -80px;
+}
+.voltage.flip-bottom{
+    transform: rotate(180deg);
+}
+.voltage.flip-bottom > h4{
+    transform: rotate(-180deg);
+}
+.voltage.flip-bottom>.data{
+    transform: rotate(-180deg);
+    right: 50px;
+}
+.voltage.flip-left{
+    transform: rotate(-90deg);
+}
+.voltage.flip-left > h4{
+    transform: rotate(90deg);
+}
+.voltage.flip-left>.data{
+    transform: rotate(90deg);
+    right: -80px;
+    top: -90px;
+}
+.current{
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+}
+.current i{
+    font-size: 14pt;
+}
+.current:hover>.data{
+    display: block;
+}
+.current.flip-right{
+    transform: rotate(90deg);
+}
+.current.flip-right > h4{
+    transform: rotate(-90deg);
+}
+.current.flip-right>.data{
+    transform: rotate(-90deg);
+    right: 50px;
+    top: -80px;
+}
+.current.flip-bottom{
+    transform: rotate(180deg);
+}
+.current.flip-bottom > h4{
+    transform: rotate(-180deg);
+}
+.current.flip-bottom>.data{
+    transform: rotate(-180deg);
+    right: 50px;
+}
+.current.flip-left{
+    transform: rotate(-90deg);
+}
+.current.flip-left > h4{
+    transform: rotate(90deg);
+}
+.current.flip-left>.data{
+    transform: rotate(90deg);
+    right: -80px;
+    top: -90px;
+}
+.resistance{
+    border: 1px solid black;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row-reverse;
+    box-sizing: border-box;
+    padding: 0px 0px;
+    align-items: center;
+    position: relative;
+}
+.resistance span{
+    font-size: 14pt;
+}
+.resistance:hover>.data{
+    display: block;
+}
+.resistance.flip-bottom{
+    transform: rotate(90deg);
+}
+.resistance.flip-bottom > h4{
+    transform: rotate(-90deg);
+}
+.resistance.flip-bottom > h4:nth-child(2){
+    rotate: 90deg;
+}
+.resistance.flip-bottom>.data{
+    transform: rotate(-90deg);
+    right: 50px;
+    top: -80px;
+}
+.resistance.flip-left{
+    transform: rotate(180deg);
+}
+.resistance.flip-left > h4{
+    transform: rotate(-180deg);
+}
+.resistance.flip-left>.data{
+    transform: rotate(-180deg);
+    right: 50px;
+}
+.resistance.flip-top{
+    transform: rotate(-90deg);
+}
+.resistance.flip-top > h4{
+    transform: rotate(90deg);
+}
+.resistance.flip-top > h4:nth-child(2){
+    rotate: 90deg;
+}
+.resistance.flip-top>.data{
+    transform: rotate(90deg);
+    right: -80px;
+    top: -90px;
+}
+.node{
+    width: 60px;
+    height: 60px;
+    border-radius: 100px;
+    background: darkorange;
+    display: block;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14pt;
+    position: relative;
+    z-index: 2;
+}
+.node h4{
+    z-index: 5;
+}
+/* .node::before{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: auto;
+    content: '';
+    z-index: 1;
+    display: block;
+    background: darkorange;
+    border-radius: 100px;
+} */
+.vr-100{
+    width: 5px;
+    min-height: 60px;
+    height: 100%;
+    background: black;
+}
+/* .vr-200{
+    width: 5px;
+    height: 200px;
+    background: black;
+} */
+.hr-100{
+    width: 100%;
+    min-width: 60px;
+    height: 5px;
+    background: black;
+}
+/* .hr-200{
+    width: 200px;
+    height: 5px;
+    background: black;
+}
+.hr-400{
+    width: 400px;
+    height: 5px;
+    background: black;
+} */
+
+/* Container */
+.circuit_container{
+    width: auto;
+    display: grid;
+    grid-auto-rows: auto;
+    grid-auto-columns: auto;
+    justify-content: flex-start;
+    align-items: center;
+    justify-items: center;
+    padding: 0px 50px;
+    margin: 100px auto;
+    grid-gap: 0px;
+}
+
+.main_options_menu{
+    min-width: 200px;
+    height: auto;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0px 10px;
+}
+.main_options_menu > a{
+    min-width: 100px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16pt;
+    color: black;
+    text-decoration: none;
+    background: #e6e6e6;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    margin: 0px 10px;
+}
+.add_element_form{
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+.add_element_form form{
+    width: 600px;
+    min-height: 400px;
+    background: #e6e6e6;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.add_element_form form > span{
+    width: 100%;
+    color: red;
+    text-align: center;
+    display: block;
+    margin: 10px auto;
+}
+.add_element_form form > h2{
+    width: 100%;
+    text-align: center;
+    margin: 10px auto;
+}
+.add_element_form form label{
+    width: 100%;
+    display: block;
+    margin: 20px 0px 5px 0px;
+}
+.add_element_form form input{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.add_element_form form input:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.add_element_form form select{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.add_element_form form select:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.add_element_form form > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.add_element_form form > div > div{
+    width: 45%;
+}
+.add_element_form form > div > div button{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    cursor: pointer;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 15px 0px;
+    background: #d5d5d5;
+}
+.add_element_form form > div > div:nth-child(2) button{
+    background: darkorange;
+    color: white;
+}
+.edit_element_form{
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+.edit_element_form form{
+    width: 600px;
+    min-height: 400px;
+    background: #e6e6e6;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.edit_element_form form > span{
+    width: 100%;
+    color: red;
+    text-align: center;
+    display: block;
+    margin: 10px auto;
+}
+.edit_element_form form > h2{
+    width: 100%;
+    text-align: center;
+    margin: 10px auto;
+}
+.edit_element_form form label{
+    width: 100%;
+    display: block;
+    margin: 20px 0px 5px 0px;
+}
+.edit_element_form form input{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.edit_element_form form input:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.edit_element_form form select{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.edit_element_form form select:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.edit_element_form form > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.edit_element_form form > div > div{
+    width: 45%;
+}
+.edit_element_form form > div > div button{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    cursor: pointer;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 15px 0px;
+    background: #d5d5d5;
+}
+.edit_element_form form > div > div:nth-child(2) button{
+    background: darkorange;
+    color: white;
+}
+.edit_element_form form > button{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    cursor: pointer;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 25px 0px;
+    background: red;
+    color: white;
+}
+
+.initialize_circuit{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    background: white;
+}
+.initialize_circuit form{
+    width: 600px;
+    min-height: 400px;
+    background: #e6e6e6;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.initialize_circuit form > span{
+    width: 100%;
+    color: red;
+    text-align: center;
+    display: block;
+    margin: 10px auto;
+}
+.initialize_circuit form > h2{
+    width: 100%;
+    text-align: center;
+    margin: 10px auto;
+}
+.initialize_circuit form label{
+    width: 100%;
+    display: block;
+    margin: 20px 0px 5px 0px;
+}
+.initialize_circuit form > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.initialize_circuit form > div > div{
+    width: 45%;
+}
+.initialize_circuit form input{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.initialize_circuit form input:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.initialize_circuit form select{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+}
+.initialize_circuit form select:focus{
+    border: 1px solid #8e8e8e;
+    outline: none;
+}
+.initialize_circuit form > button{
+    width: 100%;
+    height: 50px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    cursor: pointer;
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 25px 0px;
+    background: darkorange;
+    color: white;
+}
+
+
+/* Netlist */
+.netlist_container{
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    /* display: flex; */
+    justify-content: center;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+.netlist{
+    width: 90%;
+    padding: 50px 0px;
+}
+.netlist h2{
+    width: 100%;
+    text-align: center;
+    font-size: 32pt;
+    color: black;
+    font-weight: bold;
+}
+.netlist > h3{
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+.netlist .nodes_container{
+    width: 100%;
+}
+.netlist .nodes_container > div{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0px;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    margin: 15px 0px;
+}
+.netlist .nodes_container > div h4{
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    font-size: 14pt;
+    border-right: 1px solid #8e8e8e;
+    box-sizing: border-box;
+    padding: 20px;
+    margin: 0px;
+}
+.netlist .nodes_container > div h4 > sub{
+    align-self: flex-end;
+    font-size: 10pt;
+    margin-right: 10px;
+}
+.netlist .sources_container{
+    width: 100%;
+}
+.netlist .sources_container > div{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0px;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    margin: 15px 0px;
+    position: relative;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+.netlist .sources_container > div > div{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14pt;
+    margin: 20px;
+}
+.netlist .sources_container > div > .options{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 40px;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+}
+.netlist .sources_container > div > .options i{
+    font-size: 12pt;
+}
+.netlist .sources_container > div > .options button{
+    cursor: pointer;
+}
+
+.netlist .sources_container > div > div i{
+    font-size: 18pt;
+}
+.netlist .sources_container > div > h4:nth-child(2){
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    font-size: 14pt;
+    border-left: 1px solid #8e8e8e;
+    border-right: 1px solid #8e8e8e;
+    padding: 20px;
+}
+.netlist .sources_container > div > h4{
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    font-size: 14pt;
+    border-right: 1px solid #8e8e8e;
+    padding: 20px;
+}
+.netlist .elements_container{
+    width: 100%;
+}
+.netlist .elements_container > div{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0px;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    margin: 15px 0px;
+    padding-right: 40px;
+    box-sizing: border-box;
+    position: relative;
+}
+.netlist .elements_container > div > div{
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14pt;
+    margin: 20px;
+}
+.netlist .elements_container > div > h4:nth-child(2){
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    font-size: 14pt;
+    border-left: 1px solid #8e8e8e;
+    border-right: 1px solid #8e8e8e;
+    padding: 20px;
+}
+.netlist .elements_container > div > h4{
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    font-size: 14pt;
+    border-right: 1px solid #8e8e8e;
+    padding: 20px;
+}
+.netlist .elements_container > div > .options{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 40px;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+}
+.netlist .elements_container > div > .options i{
+    font-size: 12pt;
+}
+.netlist .elements_container > div > .options button{
+    cursor: pointer;
+}
+.netlist #close_netlist{
+width: 100%;
+margin: 50px auto;
+background: darkorange;
+color: white;
+text-align: center;
+padding: 15px 25px;
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+text-decoration: none;
+font-size: 14pt;
+font-weight: bold;
+border-radius: 5px;
+box-sizing: border-box;
+}
+.btn{
+    width: 35px;
+    height: 35px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+}
+.btn-warning{
+    background: #ffc107;
+}
+.btn-warning:hover{
+    background: #ffcd39;
+}
+.btn-danger{
+    background: #dc3545;
+    color: white;
+}
+.btn-danger:hover{
+    background: #b02a37;
+}
+
+@media (max-width:1000px){
+    .add_element_form form{
+        width: 400px;
+    }
+}
