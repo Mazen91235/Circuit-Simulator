@@ -190,7 +190,7 @@ function AssignUnit(v){
     return value.toString() + ' ' + units_arr[unit];
 }
 function GetIndex(comp){
-    for(let i=1;i<components.length;i++){
+    for(let i=0;i<components.length;i++){
         if(components[i] == comp){
             return i;
         }

@@ -1,12 +1,10 @@
 function BuildCircuit(){
     // Analyze Circuit
     AnalyzeCircuit();
-
-    // Create Netlist
-    CreateNetlist();
     
-    //
+    //Center Elements
     CenterElements();
+
     // Clear Circuit HTML
     circuit.innerHTML = '';
 
@@ -25,6 +23,9 @@ function BuildCircuit(){
         ConnectNodesComponents(comp,node_to);
     }
     ConnectNodes();
+
+    // Create Netlist
+    CreateNetlist();
 
 }
 function CenterElements(){
@@ -153,6 +154,7 @@ function AnalyzeCircuit(){
         AssignCalculatedCircuit(matrix_values,n,m);
         return 1;
     }catch(err){
+        console.log(err);
         return 0;
     }
     // console.log(matrix[0][0]);
@@ -234,11 +236,11 @@ function PutComponents(){
     for(i=0;i<components.length;i++){
         comp = components[i];
         if(comp["type"] == "R"){
-            circuit.innerHTML += '<div class="resistance component flip-'+ comp["heading"] +' r-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit(this);"> <h4>+</h4> <h4>/\\/\\/\\/\\</h4> <h4>-</h4> <div class="data"> <h4>R = <span class="inner_r">'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>Ω</h4> <h4>I = <span class="inner_current">'+ GetI(comp["from"],comp["to"],comp["value"],comp["unit"])[1] +'</span>A</h4> <h4>V = <span class="inner_voltage">'+ GetV(comp["from"],comp["to"])[1] +'</span>V</h4><h4>P = <span class="inner_power">'+ GetPower(comp)[1] +'</span>W</h4> <h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
+            circuit.innerHTML += '<div class="resistance component flip-'+ comp["heading"] +' r-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit('+ GetIndex(comp) +');"> <h4>+</h4> <h4>/\\/\\/\\/\\</h4> <h4>-</h4> <div class="data"> <h4>R = <span class="inner_r">'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>Ω</h4> <h4>I = <span class="inner_current">'+ GetI(comp["from"],comp["to"],comp["value"],comp["unit"])[1] +'</span>A</h4> <h4>V = <span class="inner_voltage">'+ GetV(comp["from"],comp["to"])[1] +'</span>V</h4><h4>P = <span class="inner_power">'+ GetPower(comp)[1] +'</span>W</h4> <h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
         }else if(comp["type"] == "V"){
-            circuit.innerHTML += '<div class="voltage component flip-'+ comp["heading"] +' v-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit(this);"> <span>+</span> <h4>V</h4> <span>-</span> <div class="data"> <h4>V = <span>'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>V</h4><h4>I = <span>'+ AssignUnit(comp["I"]) +'</span>A</h4><h4>P = <span>'+ GetPower(comp)[1] +'</span>W</h4><h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
+            circuit.innerHTML += '<div class="voltage component flip-'+ comp["heading"] +' v-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit('+ GetIndex(comp) +');"> <span>+</span> <h4>V</h4> <span>-</span> <div class="data"> <h4>V = <span>'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>V</h4><h4>I = <span>'+ AssignUnit(comp["I"]) +'</span>A</h4><h4>P = <span>'+ GetPower(comp)[1] +'</span>W</h4><h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
         }else{
-            circuit.innerHTML += '<div class="current component flip-'+ comp["heading"] +' i-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit(this);"> <i class="fa-solid fa-arrow-up"></i> <div class="data"> <h4>I = <span>'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>A</h4><h4>V = <span>'+ GetV(comp["from"],comp["to"])[1] +'</span>V</h4><h4>P = <span>'+ GetPower(comp)[1] +'</span>W</h4><h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
+            circuit.innerHTML += '<div class="current component flip-'+ comp["heading"] +' i-'+ comp["from"] +'-'+ comp["to"] +'-'+ comp["row"] +'-'+ comp["column"] +'" style="grid-area: '+ comp["row"] +' / '+ comp["column"] +' / '+ comp["row"] +' / '+ comp["column"] +';" nodes="'+ comp["from"] +' '+ comp["to"] +'" type="'+ comp["type"] +'" value="'+ comp["value"] +'" onclick="ShowEdit('+ GetIndex(comp) +');"> <i class="fa-solid fa-arrow-up"></i> <div class="data"> <h4>I = <span>'+ rnd(comp["value"]) +' '+ comp["unit"] +'</span>A</h4><h4>V = <span>'+ GetV(comp["from"],comp["to"])[1] +'</span>V</h4><h4>P = <span>'+ GetPower(comp)[1] +'</span>W</h4><h4>From <span class="from_node">'+ comp["from"] +'</span> To <span class="to_node">'+ comp["to"] +'</span></h4> </div> </div>';
         }
     }
 }

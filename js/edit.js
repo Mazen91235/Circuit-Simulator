@@ -1,8 +1,8 @@
-function ShowEdit(elm){
+function ShowEdit(elm_index){
     ShowForm("edit_element_form");
     document.querySelector(".edit_element_form").style.display = "flex";
     let form = document.querySelector(".edit_element_form > form");
-    let comp = GetComp(Number(elm.style.getPropertyValue("grid-area").split(' / ')[0]),Number(elm.style.getPropertyValue("grid-area").split(' / ')[1]));
+    let comp = components[elm_index];
     Type = form.querySelector("#edit_type");
     Value = form.querySelector("#edit_value");
     From = form.querySelector("#edit_from");
@@ -10,20 +10,15 @@ function ShowEdit(elm){
     $(From).val(comp["from"]).trigger("change");
     $(To).val(comp["to"]).trigger("change");
     Row_column = form.querySelector("#row_column");
-    Row_column.value = elm.style.getPropertyValue("grid-area").split(' / ')[0] + ' ' + elm.style.getPropertyValue("grid-area").split(' / ')[1];
+    Row_column.value = comp["row"] + ' ' + comp["column"];
 
-    let nodes = elm.getAttribute("nodes").split(' ');
+    let nodes = [comp["from"],comp["to"]];
     if(nodes[0] == 0 && nodes[1] == 1 && comp["row"] <= last_row || nodes[0] == 1 && nodes[1] == 0 && comp["row"] <= last_row){
-        // From.disabled = true;
-        // From.value = nodes[0];
-        // To.disabled = true;
-        // To.value = nodes[1];
-        // Type.disabled = true;
         form.querySelector("#delete_comp_btn").style.display = "none";
     }
-    $(".edit_element_form #edit_type").val(elm.getAttribute("type").toLowerCase()).trigger('change');
-    document.getElementById("delete_comp_btn").setAttribute("onclick","DeleteComponent("+ GetIndex(comp) +")");
-    Value.value = elm.getAttribute("value");
+    $(".edit_element_form #edit_type").val(comp["type"].toLowerCase()).trigger('change');
+    document.getElementById("delete_comp_btn").setAttribute("onclick","DeleteComponent("+ elm_index +")");
+    Value.value = comp["value"];
 }
 function ValidateEdit(Type,Value,From,To){
     if(Type == "type"){
@@ -60,6 +55,7 @@ function EditElement(form){
     let new_elm = {"type":Type.toUpperCase(),"value":Value,"unit":Unit,"from":From,"to":To};
     let temp_components = JSON.parse(JSON.stringify(components));
     temp_components.push(new_elm);
+    temp_components.splice(temp_components.indexOf(comp),1);
     if(!ValidateCircuit(temp_components,nodes)){
         return;
     }
