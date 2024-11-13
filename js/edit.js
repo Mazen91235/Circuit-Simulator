@@ -13,11 +13,13 @@ function ShowEdit(elm_index){
     Row_column.value = comp["row"] + ' ' + comp["column"];
 
     let nodes = [comp["from"],comp["to"]];
-    if(nodes[0] == 0 && nodes[1] == 1 && comp["row"] <= last_row || nodes[0] == 1 && nodes[1] == 0 && comp["row"] <= last_row){
+    if([0,1].includes(components.indexOf(comp))){
         form.querySelector("#delete_comp_btn").style.display = "none";
+    }else{
+        document.getElementById("delete_comp_btn").setAttribute("onclick","DeleteComponent("+ elm_index +")");
     }
     $(".edit_element_form #edit_type").val(comp["type"].toLowerCase()).trigger('change');
-    document.getElementById("delete_comp_btn").setAttribute("onclick","DeleteComponent("+ elm_index +")");
+    $(".edit_element_form #edit_unit").val(comp["unit"]).trigger('change');
     Value.value = comp["value"];
 }
 function ValidateEdit(Type,Value,From,To){
@@ -62,13 +64,17 @@ function EditElement(form){
     comp["value"] = Value;
     comp["type"] = Type.toUpperCase();
     comp["unit"] = Unit;
+    comp["orientation"] = GetOrientation_Heading(Type,From,To,comp)[0];
+    comp["heading"] = GetOrientation_Heading(Type,From,To,comp)[1];
     if(From == comp["to"] && To == comp["from"]){
         let temp = comp["from"];
         comp["from"] = comp["to"];
         comp["to"] = temp;
-        comp["orientation"] = GetOrientation_Heading(Type,From,To)[0];
-        comp["heading"] = GetOrientation_Heading(Type,From,To)[1];
     }else if(comp["from"] != From || comp["to"] != To){
+        if(comp == components[0]){
+            form.querySelector(".error").textContent = "Cannot Change Nodes of this primary element to keep the shape of the circuit.";
+            return;
+        }
         DeleteComponent(components.indexOf(comp));
         if(From >= nodes.length){
             From -= 1;
@@ -92,7 +98,8 @@ function EditElement(form){
         $(add_element_form.querySelector("#to")).val(To).trigger("change");
         AddElement(add_element_form);
         CloseForm("add_element_form");
-    }
+        
+        }
     BuildCircuit();
     CloseForm(form.id);
 }

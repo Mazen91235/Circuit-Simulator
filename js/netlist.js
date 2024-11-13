@@ -41,8 +41,9 @@ function CreateNetlist(){
     let delete_comp = '';
     let edit_elm;
     for(let i=0;i<sources.length;i++){
+        delete_comp = ''
         let source = sources[i];
-        if(source != components[0]){
+        if(![0,1].includes(components.indexOf(sources[i]))){
             delete_comp = '<button class="btn btn-danger" onclick="DeleteComponent('+ GetIndex(source) +')"><i class="fa-solid fa-trash"></i></button>';
         }
         if(source["type"] == "V"){
@@ -52,8 +53,9 @@ function CreateNetlist(){
         }
     }
     for(let i=0;i<elements.length;i++){
+        delete_comp = '';
         let element = elements[i];
-        if(element != components[1]){
+        if(![0,1].includes(components.indexOf(elements[i]))){
             delete_comp = '<button class="btn btn-danger" onclick="DeleteComponent('+ GetIndex(element) +')"><i class="fa-solid fa-trash"></i></button>';
         }
         elements_container.innerHTML += '<div><div class="resistance component flip-'+ element["heading"] +'"><h4>+</h4><h4>/\\/\\/\\/\\</h4><h4>-</h4></div><h4>R = '+ element["value"] + ' ' + element["unit"] +'Ω</h4><h4>V = '+ GetV(element["from"],element["to"])[1] +'V</h4><h4>I = '+ GetI(element["from"],element["to"],element["value"],element["unit"])[1] +'A</h4><h4>P = '+ GetPower(element)[1] +'W</h4><h4>From '+ element["from"] +' To '+ element["to"] +'</h4><div class="options"><button class="btn btn-warning" onclick="ShowEdit('+ GetIndex(element) +')"><i class="fa-solid fa-pen"></i></button>'+ delete_comp +'</div></div>';

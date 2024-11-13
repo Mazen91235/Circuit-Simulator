@@ -1,6 +1,7 @@
 let circuit = document.querySelector(".circuit_container");
 let nodes = [{"V":0,"rows":[1,5,1],"columns":[5,5,1],"types":["p","p","p"]},{"V":10,"rows":[5],"columns":[1],"types":["p"]}];
 let components = [{"type":"V","value":10,"unit":'',"from":0,"to":1,"orientation":"vertical","heading":"bottom","row":3,"column":1},{"type":"R","value":10,"unit":'',"from":1,"to":0,"orientation":"horizontal","heading":"left","row":5,"column":3}];
+let default_components,default_nodes;
 let last_row = 5;
 
 function ShowForm(id){
@@ -66,7 +67,8 @@ function InitializeCircuit(form){
         components[1]["unit"] = R_Unit;
         CloseForm(form.id);
         BuildCircuit();
-    
+        default_components = JSON.parse(JSON.stringify(components));
+        default_nodes = JSON.parse(JSON.stringify(nodes));
 }
 
 function GetLastColumn(){
@@ -157,9 +159,6 @@ function AssignUnit(v){
     let unit = 4;
     let value = Number(v);
     if(((Math.abs(value) * Math.pow(10,12)).toFixed(1) <= 0 && value != 0) || Math.abs(value) * Math.pow(10,-9) >= 1000){
-        // console.log("Error! Undefined Unit");
-        // console.log(v);
-        // return [v,''];
         if((Math.abs(value) * Math.pow(10,12)).toFixed(1) <= 0 && value != 0){
             value *= Math.pow(10,12);
             unit = 0;
@@ -250,4 +249,9 @@ function GetCompByPosition(row,column){
         }
     }
     return comp;
+}
+function ResetCircuit(){
+    components = JSON.parse(JSON.stringify(default_components));
+    nodes = JSON.parse(JSON.stringify(default_nodes));
+    BuildCircuit();
 }

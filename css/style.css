@@ -260,7 +260,7 @@
     justify-content: flex-start;
     align-items: center;
     justify-items: center;
-    padding: 0px 50px;
+    padding: 0px 120px;
     margin: 100px auto;
     grid-gap: 0px;
 }
@@ -274,6 +274,7 @@
     display: flex;
     flex-direction: row-reverse;
     padding: 0px 10px;
+    z-index: 10;
 }
 .main_options_menu > a{
     min-width: 100px;
@@ -483,7 +484,7 @@
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 10;
+    z-index: 100;
     background: white;
 }
 .initialize_circuit form{

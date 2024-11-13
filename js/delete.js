@@ -61,9 +61,6 @@ function ShiftComps(node,To){
     let comps = GetComponentsConnectedToNode(node);
     for(let i=0;i<comps.length;i++){
         let comp = comps[i];
-        // if(comp["column"] < nodes[node]["columns"][nodes[node]["columns"].length - 1]){
-        //     continue;
-        // }
         if(comp["from"] == node){
             if(comp["to"] == To){
                 comp["from"] = 0;

@@ -284,11 +284,20 @@ function ValidateAddElement(Type,Value,From,To){
     return 1;
 }
 
-function GetOrientation_Heading(Type,From,To){
+function GetOrientation_Heading(Type,From,To,comp={}){
     let orientation;
     let heading;
     Type = Type.toUpperCase();
-    orientation = "horizontal";
+    if(comp == components[0]){
+        orientation = "vertical";
+        if(To == 0){
+            heading = "top";
+        }else{
+            heading = "bottom";
+        }
+    }
+    else
+    {
     if(To > From){
         if(From == 0){
                 heading = "left";
@@ -302,13 +311,18 @@ function GetOrientation_Heading(Type,From,To){
                 heading = "left";
         }
     }
-    if(Type == "R"){ //Resistance is directed towards from (opposite to other elements)
-        if(heading == "right"){
-            heading = "left";
-        }else{
-            heading = "right";
-        }
+}
+if(Type == "R"){ //Resistance is directed towards from (opposite to other elements)
+    if(heading == "right"){
+        heading = "left";
+    }else if(heading == "top"){
+        heading = "bottom";
+    }else if(heading == "bottom"){
+        heading = "top";
+    }else{
+        heading = "right";
     }
+} 
     return [orientation,heading];
 }
 
@@ -319,12 +333,6 @@ function CreateParallelElement(Type,Value,Unit,From,To){
     end = GetLastNode(From,To)[1];
     let last_comp = GetLastComp(From,To);
     let Row,Column;
-    // if(orientation == "vertical"){
-    //         Row = 3;
-    //         Column = last_comp["column"] + 2;
-    // }
-    
-    // Row = last_comp["row"] + 2;
     Row = last_comp["row"] + 2;
     Column = (start + end) / 2;
 
