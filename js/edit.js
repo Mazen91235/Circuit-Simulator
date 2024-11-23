@@ -1,105 +1,139 @@
-function ShowEdit(elm_index){
-    ShowForm("edit_element_form");
-    document.querySelector(".edit_element_form").style.display = "flex";
-    let form = document.querySelector(".edit_element_form > form");
-    let comp = components[elm_index];
-    Type = form.querySelector("#edit_type");
-    Value = form.querySelector("#edit_value");
-    From = form.querySelector("#edit_from");
-    To = form.querySelector("#edit_to");
-    $(From).val(comp["from"]).trigger("change");
-    $(To).val(comp["to"]).trigger("change");
-    Row_column = form.querySelector("#row_column");
-    Row_column.value = comp["row"] + ' ' + comp["column"];
-
-    let nodes = [comp["from"],comp["to"]];
-    if([0,1].includes(components.indexOf(comp))){
-        form.querySelector("#delete_comp_btn").style.display = "none";
+let flips = ["top","right","bottom","left"];
+function RotateRight(id){
+    if(!document.querySelector(`.item-id-${id}`)) return;
+    let item = document.querySelector(`.item-id-${id}`);
+    let heading = item.getAttribute("heading");
+    let new_heading = flips.indexOf(heading) + 1;
+    if(new_heading >= flips.length){
+        new_heading -= flips.length;
+    }
+    new_heading = flips[new_heading];
+    item.setAttribute("heading",new_heading);
+    item.classList.remove(`flip-${heading}`);
+    item.classList.add(`flip-${new_heading}`);
+    let orientation;
+    if(new_heading == flips[0] || new_heading == flips[2]){
+        orientation = "vertical";
     }else{
-        document.getElementById("delete_comp_btn").setAttribute("onclick","DeleteComponent("+ elm_index +")");
+        orientation = "horizontal";
     }
-    $(".edit_element_form #edit_type").val(comp["type"].toLowerCase()).trigger('change');
-    $(".edit_element_form #edit_unit").val(comp["unit"]).trigger('change');
-    Value.value = comp["value"];
+    components[id]["orientation"] = orientation;
+    components[id]["heading"] = new_heading;
+    analyzed = false;
+    if(components[id]["from"] != null){
+        let node = nodes[components[id]["from"]];
+        DisconnectCompFromNode(id,nodes.indexOf(node));
+    }
+    if(components[id]["to"] != null){
+        let node = nodes[components[id]["to"]];
+        DisconnectCompFromNode(id,nodes.indexOf(node));
+    }
+    CloseContextMenu();
 }
-function ValidateEdit(Type,Value,From,To){
-    if(Type == "type"){
-        form.querySelector(".error").textContent = "Type cannot be empty";
-        return;
+function RotateLeft(id){
+    if(!document.querySelector(`.item-id-${id}`)) return;
+    let item = document.querySelector(`.item-id-${id}`);
+    let heading = item.getAttribute("heading");
+    let new_heading = flips.indexOf(heading) - 1;
+    if(new_heading < 0){
+        new_heading += flips.length;
     }
-    if(Value.length == 0){
-        form.querySelector(".error").textContent = "Value cannot be empty";
-        return;
+    new_heading = flips[new_heading];
+    item.setAttribute("heading",new_heading);
+    item.classList.remove(`flip-${heading}`);
+    item.classList.add(`flip-${new_heading}`);
+    let orientation;
+    if(new_heading == flips[0] || new_heading == flips[2]){
+        orientation = "vertical";
+    }else{
+        orientation = "horizontal";
     }
-    if(From.length == 0 || To.length == 0){
-        form.querySelector(".error").textContent = "Nodes cannot be empty";
-        return;
-    }
-    if(From == To){
-        form.querySelector(".error").textContent = "Cannot Make Element Start and End at same node";
-        return;
-    }
+    components[id]["orientation"] = orientation;
+    components[id]["heading"] = new_heading;
+    analyzed = false;
+    CloseContextMenu();
 }
-function EditElement(form){
-    event.preventDefault();
-    let Row_Column = form.querySelector("#row_column").value;
-    let comp = GetComp(Number(Row_Column.split(' ')[0]),Number(Row_Column.split(' ')[1]));
-
-    Type = form.querySelector("#edit_type").value;
-    Value = form.querySelector("#edit_value").value;
-    Unit = form.querySelector("#edit_unit").value;
-    From = form.querySelector("#edit_from").value;
-    To = form.querySelector("#edit_to").value;
-    ValidateEdit(Type,Value,From,To);
-    if(!ValidateAddElement(Type,Value,From,To)){
-        return;
+function EditComponent(id){
+    ShowSideBar();
+    ToggleEditComponent(id);
+    ShowInputComponent(id);
+    setTimeout(() => {
+        let sidebarOffset = $(sidebar).offset().top;
+        let targetOffset = $(sidebar.querySelector(`.data-comp-id-${id}`)).offset().top;
+        let scrollValue = targetOffset - sidebarOffset + $(sidebar).scrollTop();
+        $(sidebar).animate({ scrollTop: scrollValue }, 500);    
+        // sidebar.scrollTo(0,document.querySelector(`.sidebar .data-comp-id-${id}`).scrollHeight + document.querySelector(`.sidebar .data-comp-id-${id}`).clientHeight);
+    }, 100);
+}
+function SetUnits(id){
+    let type = components[id]["type"];
+    let elm = sidebar.querySelector(`.content .data-comp-id-${id}`);
+    unit = elm.querySelector('.unit');
+    if(type == 'r'){
+        unit.innerHTML = '<option value="">Ω</option><option value="k">kΩ</option><option value="M">MΩ</option><option value="G">GΩ</option>';
+        unit.disabled = false;
+    }else if(type == 'v'){
+        unit.innerHTML = '<option value="μ">μV</option><option value="m">mV</option><option value="">V</option><option value="k">kV</option>';
+        unit.disabled = false;
+    }else{
+        unit.innerHTML = '<option value="μ">μA</option><option value="m">mA</option><option value="">A</option>';
+        unit.disabled = false;
     }
-    let new_elm = {"type":Type.toUpperCase(),"value":Value,"unit":Unit,"from":From,"to":To};
-    let temp_components = JSON.parse(JSON.stringify(components));
-    temp_components.push(new_elm);
-    temp_components.splice(temp_components.indexOf(comp),1);
-    if(!ValidateCircuit(temp_components,nodes)){
-        return;
+    $(elm.querySelector(".type")).val('').trigger('change');
+}
+function PutValues(id){
+    let elm = sidebar.querySelector(`.content .data-comp-id-${id}`);
+    if(!elm) return;
+    SetUnits(id);
+    setTimeout(() => {
+        $(elm.querySelector(".unit")).val(components[id]["unit"]).trigger("change");
+    }, 100);
+    elm.querySelector(".value").value = components[id]["value"];
+}
+function CancelEditComponent(id){
+    PutValues(id);
+}
+function ApplyEditComponent(id){
+    let elm = sidebar.querySelector(`.content .data-comp-id-${id}`);
+    if(!elm) return;
+    let comp = components[id];
+    if(!comp) return;
+    AssignLabel(id,comp,elm.querySelector(".value").value,elm.querySelector(".unit").value);
+    comp["value"] = Number(elm.querySelector(".value").value);
+    comp["unit"] = elm.querySelector(".unit").value;
+    analyzed = false;
+}
+function AssignLabel(id,comp,new_value,new_unit){
+    let old_value = comp["value"];
+    let old_unit = comp["unit"];
+    new_value = Number(new_value).toString();
+    let text = simulator.querySelector(`.item-id-${id} .label`).textContent.split('=')[1].replace(`${old_value} ${old_unit}`,`${new_value} ${new_unit}`);
+    let new_text = simulator.querySelector(`.item-id-${id} .label`).textContent.split('=')[0] + '=' + text;
+    simulator.querySelector(`.item-id-${id} .label`).textContent = new_text;
+    CheckDuplicateLabels();
+}
+function CheckDuplicateLabels(){
+    simulator.querySelectorAll(".component").forEach(elm => {
+        let labels = elm.querySelectorAll(".label");
+        for(let i=1;i<labels.length;i++){
+            labels[i].remove();
+        }
+    });
+}
+function DeleteComponent(comp_id){
+    let comp = components[comp_id];
+    if(!comp) return;
+    if(comp["from"] != null){
+        let node = nodes[comp["from"]];
+        DisconnectCompFromNode(comp_id,nodes.indexOf(node));
     }
-    comp["value"] = Value;
-    comp["type"] = Type.toUpperCase();
-    comp["unit"] = Unit;
-    comp["orientation"] = GetOrientation_Heading(Type,From,To,comp)[0];
-    comp["heading"] = GetOrientation_Heading(Type,From,To,comp)[1];
-    if(From == comp["to"] && To == comp["from"]){
-        let temp = comp["from"];
-        comp["from"] = comp["to"];
-        comp["to"] = temp;
-    }else if(comp["from"] != From || comp["to"] != To){
-        if(comp == components[0]){
-            form.querySelector(".error").textContent = "Cannot Change Nodes of this primary element to keep the shape of the circuit.";
-            return;
-        }
-        DeleteComponent(components.indexOf(comp));
-        if(From >= nodes.length){
-            From -= 1;
-            if(From == To){
-                From = 0;
-            }
-        }
-        if(To >= nodes.length){
-            To -= 1;
-            if(From == To){
-                To = 0;
-            }
-        }
-        let add_element_form = document.querySelector("#add_element_form");
-        $(add_element_form.querySelector("#type")).val(Type).trigger("change");
-        add_element_form.querySelector("#value").value = Value;
-        SetUnits(add_element_form.querySelector("#type"),"add_element_form");
-        $(add_element_form.querySelector("#unit")).val(Unit).trigger("change");
-        AddNodes("#add_element_form",add_element_form.querySelector("#from"),add_element_form.querySelector("#to"));
-        $(add_element_form.querySelector("#from")).val(From).trigger("change");
-        $(add_element_form.querySelector("#to")).val(To).trigger("change");
-        AddElement(add_element_form);
-        CloseForm("add_element_form");
-        
-        }
-    BuildCircuit();
-    CloseForm(form.id);
+    if(comp["to"] != null){
+        let node = nodes[comp["to"]];
+        DisconnectCompFromNode(comp_id,nodes.indexOf(node));
+    }
+    simulator.querySelector(`.item-id-${comp_id}`).remove();
+    components.splice(comp_id,1);
+    analyzed = false;
+    ChooseSubMenu("inputs");
+    CloseContextMenu();
 }

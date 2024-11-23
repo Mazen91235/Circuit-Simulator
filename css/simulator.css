@@ -1,0 +1,654 @@
+body{
+    /* background: url('/assets/grid.jfif'); */
+    background: rgb(32, 32, 32);
+}
+.nav{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 10vh;
+    background: rgb(0, 119, 255);
+    border-radius: none;
+    padding: 0px 50px;
+    box-sizing: border-box;
+}
+.nav h1{
+    color: white;
+}
+.component{
+    position: relative;
+    user-select: none;
+    overflow: visible;
+}
+.component_selector{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+.component_selector .component{
+    margin: 10px 15px;
+}
+.nav > a{
+    font-size: 16pt;
+    color: white;
+    text-decoration: none;
+}
+.dependent{
+    border-radius: none;
+    background: none;
+    border: none;
+    position: relative;
+    width: 42.426406871192846px;
+    height: 42.426406871192846px;
+}
+.dependent::before{
+    width: 100%;
+    height: 100%;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: white;
+    border: 1px solid black;
+    content: '';
+    z-index: -1;
+}
+.dependent span{
+    transform: -45deg;
+}
+.inductor{
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    font-size: 12pt;
+    overflow: hidden;
+}
+.inductor img{
+    height: 80px;
+    transform: rotate(90deg);
+}
+.inductor.flip-top{
+    transform: rotate(-90deg);
+}
+.inductor.flip-top span{
+    transform: rotate(90deg);
+}
+.inductor.flip-right{
+    transform: rotate(0deg);
+}
+.inductor.flip-left{
+    transform: rotate(180deg);
+}
+.inductor.flip-bottom{
+    transform: rotate(90deg);
+}
+.inductor.flip-top span{
+    transform: rotate(90deg);
+}
+.capacitor{
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    position: relative;
+    box-sizing: border-box;
+}
+.capacitor h4{
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+.capacitor .vr{
+    width: 3px;
+    height: 80%;
+    background: black;
+    content: '';
+    margin: 0px 5px;
+    box-sizing: border-box;
+}
+.capacitor.flip-top{
+    transform: rotate(-90deg);
+}
+.capacitor.flip-top span{
+    transform: rotate(90deg);
+}
+.capacitor.flip-right{
+    transform: rotate(0deg);
+}
+.capacitor.flip-left{
+    transform: rotate(180deg);
+}
+.capacitor.flip-bottom{
+    transform: rotate(90deg);
+}
+.capacitor.flip-bottom span{
+    transform: rotate(90deg);
+}
+body{
+    padding: 0px 60px;
+    overflow-x: hidden;
+}
+.simulator_container{
+    min-width: calc(100vw - 60px);
+    /* width: 100vw; */
+    min-height: 100vh;
+    display: grid;
+    grid-auto-rows: 60px;
+    grid-auto-columns: 60px;
+    justify-content: flex-start;
+    align-items: center;
+    justify-items: center;
+    padding: 0px 0px;
+    margin: 0px 0px 0px 60px;
+    margin-right: 60px;
+}
+.context-menu{
+    position: fixed;
+    top: 200px;
+    left: 200px;
+    min-width: 200px;
+    min-height: 50px;
+    display: none;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    background: gray;
+    z-index: 50;
+}
+.context-menu > a{
+    width: 100%;
+    padding: 15px 25px;
+    transition: 0.2s ease-in-out;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+.context-menu > a i{
+    margin: 0px 10px;
+}
+.context-menu > a:hover{
+    background: #909090;
+}
+.connector_node{
+    width: 20px;
+    height: 20px;
+    background: rgb(0, 128, 49);
+    border-radius: 100px;
+    content: '';
+    position: absolute;
+    z-index: -10;
+}
+.connector_node.from{
+    bottom: -10px;
+}
+.connector_node.to{
+    top: -10px;
+}
+.component::before{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: white;
+    z-index: -1;
+    content: '';
+}
+.resistance::before{
+    border-radius: 0px;
+}
+.resistance .connector_node.from{
+    bottom: 20px;
+    right: -10px;
+}
+.resistance .connector_node.to{
+    top: 20px;
+    left: -10px;
+}
+.v_wire{
+    width: 6px;
+    height: 60px;
+    background: orange;
+    padding: 0px;
+    margin: 0px;
+}
+.h_wire{
+    width: 60px;
+    height: 6px;
+    background: orange;
+    padding: 0px;
+    margin: 0px;
+}
+.binding_wire{
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    transform: rotate(0deg);
+}
+.binding_wire .v_binder{
+    width: 60px;
+    height: 60px;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.binding_wire .v_binder .v_wire{
+    height: 32px;
+}
+.binding_wire .h_binder{
+    width: 60px;
+    height: 60px;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.binding_wire .h_binder .h_wire{
+    width: 32px;
+}
+.simulator_bg{
+    width: 100vw;
+    position: absolute;
+    top: 0vh;
+    left: 0px;
+    height: 100vh;
+    z-index: -11;
+    
+}
+.simulator_bg .v-wire{
+    width: 1px;
+    height: 100vh;
+    background: orange;
+    content: '';
+    margin: 0px;
+    position: absolute;
+    top: 0vh;
+    left: 0px;
+}
+.simulator_bg .h-wire{
+    width: 100vw;
+    height: 1px;
+    background: orange;
+    content: '';
+    margin: 0px;
+    position: absolute;
+    top: 0vh;
+    left: 0px;
+}
+.node{
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+}
+.node h5{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16pt;
+}
+.node_placeholder{
+    font-size: 24;
+    background: none;
+    border: 2px dashed orange;
+    box-sizing: border-box;
+    transition: 0.1s ease-in-out;
+}
+.node_placeholder:hover{
+    background: rgba(255, 166, 0, 0.045);
+}
+.node input{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: center;
+    font-size: 16pt;
+    color: white;
+    user-select: none;
+    cursor: pointer;
+}
+.node input:disabled{
+    user-select: none;
+    cursor: pointer;
+}
+.sidebar{
+    width: 500px;
+    height: 100vh;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0px;
+    left: -500px;
+    z-index: 15000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background: midnightblue;
+    color: white;
+    padding: 50px 0px 5vh 0px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    transition: 0.2s ease-in-out;
+}
+.sidebar a{
+    color: white;
+    text-decoration: none;
+}
+.sidebar .footer{
+    width: 100%;
+    height: 10vh;
+    text-align: center;
+    /* position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: midnightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; */
+}
+.sidebar .footer a{
+    text-decoration: underline;
+}
+.sidebar #close_sidebar{
+    position: absolute;
+    top: 0px;
+    left: calc(100% - 50px);
+    font-size: 16pt;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar #analyze_circuit_btn{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.3);
+    border-radius: 5px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+}
+.sidebar .submenu{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    margin: 25px 0px 0px 0px;
+    height: 10vh;
+}
+.sidebar .submenu > li{
+    width: 25%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+.sidebar .submenu > li:hover{
+    background: royalblue;
+}
+.sidebar .submenu > li.active{
+    background: royalblue;
+}
+.sidebar::-webkit-scrollbar{
+    display: none;
+}
+.sidebar .content{
+    width: 100%;
+    /* min-height: 90vh; */
+    padding: 25px 10px;
+    box-sizing: border-box;
+}
+.sidebar .content .msg{
+    width: 100;
+    min-height: 55vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16pt;
+    font-weight: bold;
+}
+.sidebar .content > h4{
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    font-size: 18pt;
+}
+.sidebar .content .nodes_container{
+    width: 100;
+    position: relative;
+    padding: 0px 5px;
+    box-sizing: border-box;
+}
+.sidebar .content .nodes_container .output_component{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+}
+.sidebar .content .nodes_container .output_component h5{
+    font-size: 14pt;
+    height: 100%;
+}
+.sidebar .content .sources_container{
+    width: 100;
+    position: relative;
+    padding: 0px 5px;
+    box-sizing: border-box;
+}
+.sidebar .content .sources_container .output_component{
+    width: 100%;
+    margin: 10px 0px;
+}
+.sidebar .content .sources_container .output_component h5{
+    font-size: 14pt;
+    height: 100%;
+}
+.sidebar .content .sources_container .output_component ul{
+    margin-left: 40px;
+}
+.sidebar .content .sources_container .output_component ul li{
+    font-size: 12pt;
+    margin: 5px 0px;
+}
+.sidebar .content .elements_container{
+    width: 100;
+    position: relative;
+    padding: 0px 5px;
+    box-sizing: border-box;
+}
+.sidebar .content .elements_container .output_component{
+    width: 100%;
+    margin: 10px 0px;
+}
+.sidebar .content .elements_container .output_component h5{
+    font-size: 14pt;
+    height: 100%;
+}
+.sidebar .content .elements_container .output_component ul{
+    margin-left: 40px;
+}
+.sidebar .content .elements_container .output_component ul li{
+    font-size: 12pt;
+    margin: 5px 0px;
+}
+.sidebar .content .errors_container{
+    width: 100%;
+    position: relative;
+    padding: 0px 15px;
+}
+.sidebar .content .errors_container li{
+    width: 100;
+    margin: 10px 0px;
+}
+.component .label{
+    position: absolute;
+    min-width: 60px;
+    height: 60px;
+    top: 0px;
+    right: 65px;
+    color: white;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12pt;
+    white-space: nowrap;
+}
+.component.flip-right .label{
+    transform: rotate(-90deg);
+    right: 55px;
+}
+.component.flip-bottom .label{
+    transform: rotate(-180deg);
+}
+.component.flip-left .label{
+    transform: rotate(90deg);
+    right: 55px;
+}
+.resistance.flip-top .label{
+    transform: rotate(90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.resistance.flip-right .label{
+    transform: rotate(0deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
+.resistance.flip-bottom .label{
+    transform: rotate(-90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.resistance.flip-left .label{
+    transform: rotate(180deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
+.sidebar .content .input_component{
+    width: 100%;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.2);
+    overflow: hidden;
+    max-height: 50px;
+    transition: 0.25s ease-in-out;
+    margin: 20px 0px;
+}
+.sidebar .content .input_component .title{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+.sidebar .content .input_component .title i{
+    transition: 0.5s ease-in-out;
+}
+.sidebar .content .input_component .input_data{
+    padding: 10px;
+    position: relative;
+}
+.sidebar .content .input_component .input_data input{
+    width: 100%;
+    padding: 15px 25px;
+    border: 1px solid royalblue;
+    outline: none;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+.sidebar .content .input_component .input_data select{
+    width: 100%;
+    padding: 15px 25px;
+    border: 1px solid royalblue;
+    outline: none;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+.sidebar .content .input_component .input_data select option{
+    color: black;
+}
+.sidebar .content .input_component .input_data > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.sidebar .content .input_component .input_data > div > div{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+.sidebar .content .input_component .input_data > div a{
+    width: 45%;
+    height: 50px;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+.sidebar .content .input_component .input_data > a{
+    width: 90%;
+    height: 50px;
+    padding: 15px 25px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 15px auto;
+}
+.sidebar .content .input_component.active{
+    max-height: 600px;
+}
+.sidebar .content .input_component.active .title i{
+    transform: rotate(180deg);
+}
