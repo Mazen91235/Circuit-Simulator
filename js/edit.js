@@ -51,6 +51,14 @@ function RotateLeft(id){
     components[id]["orientation"] = orientation;
     components[id]["heading"] = new_heading;
     analyzed = false;
+    if(components[id]["from"] != null){
+        let node = nodes[components[id]["from"]];
+        DisconnectCompFromNode(id,nodes.indexOf(node));
+    }
+    if(components[id]["to"] != null){
+        let node = nodes[components[id]["to"]];
+        DisconnectCompFromNode(id,nodes.indexOf(node));
+    }
     CloseContextMenu();
 }
 function EditComponent(id){
