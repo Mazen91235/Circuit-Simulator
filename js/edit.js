@@ -140,8 +140,40 @@ function DeleteComponent(comp_id){
         DisconnectCompFromNode(comp_id,nodes.indexOf(node));
     }
     simulator.querySelector(`.item-id-${comp_id}`).remove();
+    for(let i=comp_id+1;i<components.length;i++){
+        let elm = simulator.querySelector(`.item-id-${i}`);
+        if(elm){
+            elm.classList.remove(`item-id-${i}`);
+            elm.classList.add(`item-id-${i-1}`);
+            elm.setAttribute("comp_id",i-1);
+            components[i]["id"] -= 1;
+        }
+        simulator.querySelectorAll(`.wire-comp-id-${i}`).forEach(wire => {
+            wire.classList.remove(`wire-comp-id-${i}`);
+            wire.classList.add(`wire-comp-id-${i-1}`);
+            if(wire.getAttribute("from")){
+                wire.setAttribute("from",Number(wire.getAttribute("from")) - 1);
+                if(wire.classList.contains(`wire-comp-from-id-${i}`)){
+                    wire.classList.remove(`wire-comp-from-id-${i}`);
+                    wire.classList.add(`wire-comp-from-id-${i-1}`);
+                }
+            }else if(wire.getAttribute("to")){
+                wire.setAttribute("to",Number(wire.getAttribute("to")) - 1);
+                if(wire.classList.contains(`wire-comp-to-id-${i}`)){
+                    wire.classList.remove(`wire-comp-to-id-${i}`);
+                    wire.classList.add(`wire-comp-to-id-${i-1}`);
+                }
+            }
+        });
+        for(let j=0;j<nodes.length;j++){
+            for(let k=0;k<nodes[j]["comps"].length;k++){
+                if(nodes[j]["comps"][k] == i) nodes[j]["comps"][k] -= 1;
+            }
+        }
+    }
     components.splice(comp_id,1);
     analyzed = false;
     ChooseSubMenu("inputs");
     CloseContextMenu();
+    ResetEventListeners();
 }

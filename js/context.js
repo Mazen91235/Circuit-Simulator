@@ -48,6 +48,9 @@ function PrepareNodesContextMenu(){
             context_menu.style.left = left + "px"; // Set left position
             context_menu.innerHTML = '';
             context_menu.innerHTML += `<a href="#!" onclick="ActivateNode(${node_id})">Edit Node <i class="fa-solid fa-pen"></i></a><a href="#!" onclick="DeleteNode(${node_id})">Delete Node <i class="fa-solid fa-trash"></i></a><a href="#!" onclick="CopyNode(${node_id},${GetIndexOfPosition(node_id,row,column)})">Copy Node</a>`;
+            if(ground_node != node_id){
+                context_menu.innerHTML += `<a href="#!" onclick="SetGroundNode(${node_id})">Set as Ground Node</a>`;
+            }
             for(let i=0;i<nodes[node_id]["comps"].length;i++){
                 let comp_id = nodes[node_id]["comps"][i];
                 let comp = components[comp_id];

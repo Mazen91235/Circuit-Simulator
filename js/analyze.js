@@ -1,6 +1,6 @@
 let analyzed = false;
 let analyze_errors = [];
-
+let main_nodes;
 
 function ValidateCircuit(){
     analyze_errors = [];
@@ -24,6 +24,9 @@ function ValidateCircuit(){
         if(nodes[i]["comps"].length == 0){
             analyze_errors.push(`Node ${nodes[i]["node"]} is not connected to any component. Connect it first`);
         }
+    }
+    if(!nodes[ground_node]){
+        analyze_errors.push(`There's no ground node. Add a 0 node or assign a ground node`);
     }
     
     if(analyze_errors.length > 0){
@@ -78,10 +81,26 @@ function GetSumSources(node_id,type){
     }
     return sum;
 }
+function GetNodeIndex(node){
+    for(let i=0;i<nodes.length;i++){
+        if(nodes[i]["node"] == node) return i;
+    }
+}
+function GetNodeFromIndex(node_id){
+    return nodes[node_id]["node"];
+}
+function GetMainNodes(){
+    main_nodes = JSON.parse(JSON.stringify(nodes));
+    main_nodes.splice(ground_node,1);
+    for(let i=0;i<main_nodes.length;i++){
+        main_nodes[i]["id"] = GetNodeIndex(main_nodes[i]["node"]);
+    }
+}
 function AnalyzeCircuit(){
     if(!ValidateCircuit()) return;
     let sources = GetComponents("v");
-    let n = nodes.length;
+    GetMainNodes();
+    let n = main_nodes.length;
     let m = sources.length;
     let matrix = math.matrix();
     matrix.resize([m+n,m+n]); 
@@ -92,15 +111,15 @@ function AnalyzeCircuit(){
         if(i <= n){
             for(j=1;j<=m+n;j++){
                 if(j <= n){
-                    matrix.subset(math.index(i-1, j-1), G(i-1,j-1)); 
+                    matrix.subset(math.index(i-1, j-1), G(main_nodes[i-1]["id"],main_nodes[j-1]["id"])); 
                 }else{
-                    matrix.subset(math.index(i-1, j-1), GetConnectedVoltage(i-1,sources[j-n-1])); 
+                    matrix.subset(math.index(i-1, j-1), GetConnectedVoltage(main_nodes[i-1]["id"],sources[j-n-1])); 
                 }
             }
         }else{
             for(j=1;j<=m+n;j++){
                 if(j <= n){
-                    matrix.subset(math.index(i-1, j-1), GetConnectedVoltage(j-1,sources[i-n-1])); 
+                    matrix.subset(math.index(i-1, j-1), GetConnectedVoltage(main_nodes[j-1]["id"],sources[i-n-1])); 
                 }else{
                     matrix.subset(math.index(i-1, j-1), 0); 
                 }
@@ -109,7 +128,7 @@ function AnalyzeCircuit(){
     }
     for(let i=1;i<=m+n;i++){
         if(i <= n){
-            matrix_IV.subset(math.index(i-1), GetSumSources(i-1,"I")); 
+            matrix_IV.subset(math.index(i-1), GetSumSources(main_nodes[i-1]["id"],"I")); 
         }else{
             matrix_IV.subset(math.index(i-1), GetValue(sources[i-n-1]["value"],sources[i-n-1]["unit"])); 
         }
@@ -131,7 +150,7 @@ function AnalyzeCircuit(){
 function AssignCalculatedValues(matrix,sources,n,m){
     for(let i=1;i<=n+m;i++){
         if(i <= n){
-            nodes[i-1]["V"] = matrix.subset(math.index(i-1,0)); 
+            nodes[main_nodes[i-1]["id"]]["V"] = matrix.subset(math.index(i-1,0)); 
         }else{
             sources[i-n-1]["I"] = matrix.subset(math.index(i-1,0)) * -1; 
         }

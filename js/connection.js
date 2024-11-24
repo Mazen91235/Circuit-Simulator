@@ -1,3 +1,4 @@
+let ground_node;
 function CreateWire(){
     if(!wire_comp || !wire_type) return;
     let comp = components[Number(wire_comp.getAttribute("comp_id"))];
@@ -266,20 +267,43 @@ function DeactivateNode(node_id){
     if(value == null){
         value = nodes[node_id]["node"];
     }
-    if(value == null) value = '';
-    setTimeout(() => {
-        nodes[node_id]["node"] = value;
-        node.innerHTML = `<h5>${value}</h5>`;
-    }, 100);
+    if(value == null) value = GetLastNode();
+    if(NodeExist(value) && value != nodes[node_id]["node"]){
+        analyze_errors.push(`Node ${value} already exist, Copy it instead or use a new node`);
+        ChooseSubMenu("errors");
+        value = GetLastNode();
+    }
+    nodes[node_id]["node"] = value;
+    node.innerHTML = `<h5>${value}</h5>`;
     simulator.querySelectorAll(`.node-id-${node_id}`).forEach(node_elm => {
         node_elm.innerHTML = `<h5>${value}</h5>`;
     });
     analyzed = false;
+
+    if(value == 0 && ground_node == null){
+        SetGroundNode(node_id);
+    }
 }
 function SetNodesDraggable(){
     simulator.querySelectorAll(".node").forEach(node => {
         if(!node.classList.contains("copied_node")) SetDraggable(node);
     });
+}
+function SetGroundNode(node_id){
+    if(nodes[ground_node]){
+        nodes[ground_node]["ground"] = false;
+    }
+    ground_node = node_id;
+    let node = nodes[node_id];
+    node["ground"] = true;
+    node["V"] = 0;
+    simulator.querySelectorAll(`.ground_node`).forEach(node_elm => {
+        node_elm.classList.remove("ground_node");
+    });
+    simulator.querySelectorAll(`.node-id-${node_id}`).forEach(node_elm => {
+        node_elm.classList.add("ground_node");
+    });
+    CloseContextMenu();
 }
 function DisconnectCompFromNode(comp_id,node_id,type){
     let comp = components[comp_id];
@@ -396,6 +420,7 @@ function HandleCopyNode(){
             wire.setAttribute("row",row);
             wire.setAttribute("column",column);
             wire.innerHTML = `<h5>${node["node"]}</h5>`;
+            if(NodeID == ground_node) wire.classList.add("ground_node");
             node["positions"].push({row,column});
         }else{
             wire.classList.add(`wire-node-id-${NodeID}`);
@@ -419,8 +444,41 @@ function DeleteNode(node_id){
         DisconnectCompFromNode(null,node_id,"node");
     }
     simulator.querySelectorAll(`.node-id-${node_id}`).forEach(node => {node.remove()});
-    nodes.splice(node_id,1);
     analyzed = false;
+    for(let i=node_id+1;i<nodes.length;i++){
+            simulator.querySelectorAll(`.node-id-${i}`).forEach(node_elm => {
+                node_elm.classList.remove(`node-id-${i}`);
+                node_elm.classList.add(`node-id-${i-1}`);
+                if(node_elm.getAttribute("node")){
+                    node_elm.setAttribute("node",Number(node_elm.getAttribute("node")) - 1);
+                }
+            });
+            simulator.querySelectorAll(`.wire-node-id-${i}`).forEach(wire => {
+                wire.classList.remove(`wire-node-id-${i}`);
+                wire.classList.add(`wire-node-id-${i-1}`);
+                if(wire.getAttribute("node")){
+                    wire.setAttribute("node",Number(wire.getAttribute("node")) - 1);
+                }
+            });
+    }
+    nodes.splice(node_id,1);
+    if(ground_node == node_id) ground_node = null;
     CancelCopyNode();
     CloseContextMenu();
+    ResetEventListeners();
+}
+function NodeExist(node_number){
+    for(let i=0;i<nodes.length;i++){
+        let node = nodes[i];
+        if(node["node"] == node_number) return true;
+    }
+    return false;
+}
+function GetLastNode(){
+    let max_node = 0;
+    for(let i=0;i<nodes.length;i++){
+        let node = nodes[i];
+        if(node["node"] > max_node) max_node = node["node"];
+    }
+    return ++max_node;
 }

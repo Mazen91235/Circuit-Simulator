@@ -340,6 +340,9 @@ body{
     user-select: none;
     cursor: pointer;
 }
+.node.ground_node{
+    background: rgb(123, 27, 123);
+}
 .sidebar{
     width: 500px;
     height: 100vh;

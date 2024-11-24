@@ -73,6 +73,11 @@ function PutInputs(){
             let elm = simulator.querySelector(`.item-id-${components.indexOf(comp)}`);
             if(elm){
                 elm.innerHTML += `<div class="label">${label} = ${comp["value"]} ${comp["unit"]}${comp["measuring_unit"]}</div>`;
+                if(elm.querySelectorAll(".label").length > 1){
+                    for(let i=0;i<elm.querySelectorAll(".label").length - 1;i++){
+                        elm.querySelectorAll(".label")[i].remove();
+                    }
+                }
             }
         }
     }
@@ -105,7 +110,7 @@ for(let i=0;i<sources.length;i++){
                     <ul>
                         <li>I = ${AssignUnit(source["I"])}A</li>
                         <li>P = ${AssignUnit(source["I"] * GetValue(source["value"],source["unit"]) * -1)}W</li>
-                        <li>Nodes: ${source["from"]} <i class="fa-solid fa-arrow-right"></i> ${source["to"]}</li>
+                        <li>Nodes: ${GetNodeFromIndex(source["from"])} <i class="fa-solid fa-arrow-right"></i> ${GetNodeFromIndex(source["to"])}</li>
                     </ul>
                 </div>`;
 }
@@ -117,7 +122,7 @@ for(let i=0;i<sources.length;i++){
                     <ul>
                         <li>V = ${GetV(source["from"],source["to"])}V</li>
                         <li>P = ${GetPower(source["from"],source["to"],GetValue(source["value"],source["unit"]),"i")}W</li>
-                        <li>Nodes: ${source["from"]} <i class="fa-solid fa-arrow-right"></i> ${source["to"]}</li>
+                        <li>Nodes: ${GetNodeFromIndex(source["from"])} <i class="fa-solid fa-arrow-right"></i> ${GetNodeFromIndex(source["to"])}</li>
                     </ul>
                 </div>`;
 }
@@ -130,7 +135,7 @@ for(let i=0;i<elements.length;i++){
                         <li>V = ${GetV(element["from"],element["to"])}V</li>
                         <li>I = ${GetI(element["from"],element["to"],GetValue(element["value"],element["unit"]))}A</li>
                         <li>P = ${GetPower(element["from"],element["to"],GetValue(element["value"],element["unit"]),"r")}W</li>
-                        <li>Nodes: ${element["from"]} <i class="fa-solid fa-arrow-right"></i> ${element["to"]}</li>
+                        <li>Nodes: ${GetNodeFromIndex(element["from"])} <i class="fa-solid fa-arrow-right"></i> ${GetNodeFromIndex(element["to"])}</li>
                     </ul>
                 </div>`;
 }
