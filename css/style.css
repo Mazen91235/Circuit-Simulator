@@ -19,7 +19,7 @@
     font-size: 32pt;
     font-weight: bold;
 }
-.data{
+/* .data{
     position: absolute;
     top: -50px;
     right: -100px;
@@ -30,7 +30,7 @@
     text-align: center;
     cursor: auto;
     z-index: 15;
-}
+} */
 .component{
     cursor: pointer;
     padding: 0px;
@@ -58,7 +58,7 @@
     position: relative;
 }
 .voltage span{
-    font-size: 14pt;
+    font-size: 16pt;
 }
 .voltage:hover>.data{
     display: block;
@@ -156,8 +156,12 @@
     align-items: center;
     position: relative;
 }
-.resistance span{
+.resistance.flip-right h4{
     font-size: 14pt;
+    transform: rotate(-90deg);
+}
+.resistance.flip-right h4:nth-child(2){
+    transform: rotate(90deg)!important;
 }
 .resistance:hover>.data{
     display: block;
@@ -180,7 +184,10 @@
     transform: rotate(180deg);
 }
 .resistance.flip-left > h4{
-    transform: rotate(-180deg);
+    transform: rotate(-90deg);
+}
+.resistance.flip-left > h4:nth-child(2){
+    transform: rotate(-90deg);
 }
 .resistance.flip-left>.data{
     transform: rotate(-180deg);

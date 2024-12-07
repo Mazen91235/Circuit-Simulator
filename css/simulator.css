@@ -1,6 +1,9 @@
 body{
     /* background: url('/assets/grid.jfif'); */
-    background: rgb(32, 32, 32);
+    /* background: url('/assets/bg.png'); */
+    background: url('/assets/bg2.png');
+    /* background: rgb(32, 32, 32); */
+    /* background: #f0f0f0; */
 }
 .nav{
     position: fixed;
@@ -15,6 +18,8 @@ body{
     border-radius: none;
     padding: 0px 50px;
     box-sizing: border-box;
+    z-index: 1000;
+    user-select: none;
 }
 .nav h1{
     color: white;
@@ -23,6 +28,12 @@ body{
     position: relative;
     user-select: none;
     overflow: visible;
+    color: #bb2e36!important;
+    border: none!important;
+    outline: none!important;
+}
+.component::before{
+    background: #ffeaa7!important;
 }
 .component_selector{
     display: flex;
@@ -55,9 +66,9 @@ body{
     top: 0px;
     left: 0px;
     background: white;
-    border: 1px solid black;
     content: '';
     z-index: -1;
+    border-radius: 0!important;
 }
 .dependent span{
     transform: -45deg;
@@ -66,11 +77,20 @@ body{
     flex-direction: row-reverse;
     justify-content: space-around;
     font-size: 12pt;
-    overflow: hidden;
-}
-.inductor img{
-    height: 80px;
+    user-select: none;
+    position: relative;
     transform: rotate(90deg);
+    background: transparent;
+}
+.inductor h4{
+    width: 60px;
+    height: 60px;
+    content: '';
+    background-image: url("/assets/inductor.png");
+    background-position: center;
+    background-size: contain;
+    transform: rotate(90deg);
+    background-repeat: no-repeat;
 }
 .inductor.flip-top{
     transform: rotate(-90deg);
@@ -90,11 +110,20 @@ body{
 .inductor.flip-top span{
     transform: rotate(90deg);
 }
+.inductor .connector_node.from{
+    bottom:  unset;
+    right: -15px;
+}
+.inductor .connector_node.to{
+    top:  unset;
+    left: -15px;
+}
 .capacitor{
     flex-direction: row-reverse;
     justify-content: space-around;
     position: relative;
     box-sizing: border-box;
+    background: transparent;
 }
 .capacitor h4{
     height: 100%;
@@ -128,14 +157,21 @@ body{
 .capacitor.flip-bottom span{
     transform: rotate(90deg);
 }
+.capacitor .connector_node.from{
+    bottom:  unset;
+    right: -15px;
+}
+.capacitor .connector_node.to{
+    top:  unset;
+    left: -15px;
+}
 body{
     padding: 0px 60px;
-    overflow-x: hidden;
+    box-sizing: border-box;
 }
 .simulator_container{
-    min-width: calc(100vw - 60px);
-    /* width: 100vw; */
-    min-height: 100vh;
+    width: 1000vw;
+    height: 1000vh;
     display: grid;
     grid-auto-rows: 60px;
     grid-auto-columns: 60px;
@@ -145,12 +181,13 @@ body{
     padding: 0px 0px;
     margin: 0px 0px 0px 60px;
     margin-right: 60px;
+    cursor: move;
 }
 .context-menu{
-    position: fixed;
+    position: absolute;
     top: 200px;
     left: 200px;
-    min-width: 200px;
+    min-width: 225px;
     min-height: 50px;
     display: none;
     justify-content: flex-start;
@@ -187,10 +224,16 @@ body{
     z-index: -10;
 }
 .connector_node.from{
-    bottom: -10px;
+    bottom: -15px;
 }
 .connector_node.to{
-    top: -10px;
+    top: -15px;
+}
+.dependent .connector_node.from{
+    bottom: -20px;
+}
+.dependent .connector_node.to{
+    top: -20px;
 }
 .component::before{
     width: 100%;
@@ -203,16 +246,26 @@ body{
     z-index: -1;
     content: '';
 }
-.resistance::before{
-    border-radius: 0px;
+.resistance h4:nth-child(2){
+    width: 60px;
+    height: 60px;
+    content: '';
+    background-image: url("/assets/resistance.png");
+    background-position: center;
+    background-size: contain;
+    transform: rotate(0deg);
+    background-repeat: no-repeat;
+}
+.resistance{
+    background: transparent;
 }
 .resistance .connector_node.from{
     bottom: 20px;
-    right: -10px;
+    right: -15px;
 }
 .resistance .connector_node.to{
     top: 20px;
-    left: -10px;
+    left: -15px;
 }
 .v_wire{
     width: 6px;
@@ -268,13 +321,13 @@ body{
     width: 32px;
 }
 .simulator_bg{
-    width: 100vw;
+    width: 1000vw;
     position: absolute;
     top: 0vh;
     left: 0px;
-    height: 100vh;
+    height: 1000vh;
     z-index: -11;
-    
+    cursor: move;
 }
 .simulator_bg .v-wire{
     width: 1px;
@@ -451,6 +504,18 @@ body{
     margin: 0px;
     font-size: 18pt;
 }
+.sidebar .content > h5{
+    width: 100%;
+    padding: 0px;
+    margin: 10px 0px;
+    font-size: 14pt;
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 .sidebar .content .nodes_container{
     width: 100;
     position: relative;
@@ -524,7 +589,7 @@ body{
     height: 60px;
     top: 0px;
     right: 65px;
-    color: white;
+    color: black;
     background: transparent;
     display: flex;
     justify-content: center;
@@ -567,6 +632,54 @@ body{
     bottom: 60px;
     right: unset;
 }
+.capacitor.flip-top .label{
+    transform: rotate(90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.capacitor.flip-right .label{
+    transform: rotate(0deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
+.capacitor.flip-bottom .label{
+    transform: rotate(-90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.capacitor.flip-left .label{
+    transform: rotate(180deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
+.inductor.flip-top .label{
+    transform: rotate(90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.inductor.flip-right .label{
+    transform: rotate(0deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
+.inductor.flip-bottom .label{
+    transform: rotate(-90deg);
+    top: unset;
+    bottom: 75px;
+    right: unset;
+}
+.inductor.flip-left .label{
+    transform: rotate(180deg);
+    top: unset;
+    bottom: 60px;
+    right: unset;
+}
 .sidebar .content .input_component{
     width: 100%;
     box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.2);
@@ -602,6 +715,12 @@ body{
     color: white;
     box-sizing: border-box;
     margin: 10px 0px;
+}
+.sidebar .content .input_component .input_data input:disabled{
+    background: #bebebe;
+    color: black;
+    user-select: none;
+    cursor: not-allowed;
 }
 .sidebar .content .input_component .input_data select{
     width: 100%;
@@ -654,4 +773,271 @@ body{
 }
 .sidebar .content .input_component.active .title i{
     transform: rotate(180deg);
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 119, 255);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(0, 108, 232);
+  }
+
+  .resistance .dependent_label{
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    transform: rotate(90deg);
+    color: black;
+  }
+  .resistance.flip-left .dependent_label span{
+    transform: rotate(90deg);
+  }
+  .resistance.flip-right .dependent_label span{
+    transform: rotate(-90deg);
+  }
+  .resistance.flip-bottom .dependent_label span{
+    transform: rotate(180deg);
+  }
+  .resistance .dependent_label div i{
+    color: #bb2e36;
+    font-size: 16pt;
+  }
+
+  .resistance .dependent_label div span{
+  display: inline-block;
+  }
+
+  .capacitor .dependent_label{
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    transform: rotate(90deg);
+    color: black;
+  }
+  .capacitor .dependent_label span{
+    transform: rotate(0deg);
+  }
+  .capacitor.flip-left .dependent_label span{
+    transform: rotate(90deg);
+  }
+  .capacitor.flip-right .dependent_label span{
+    transform: rotate(-90deg);
+  }
+  .capacitor.flip-bottom .dependent_label span{
+    transform: rotate(180deg);
+  }
+  .capacitor .dependent_label div i{
+    color: #bb2e36;
+    font-size: 16pt;
+  }
+
+  .capacitor .dependent_label div span{
+  display: inline-block;
+  }
+
+  .inductor .dependent_label{
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    transform: rotate(90deg);
+    color: black;
+  }
+  .inductor .dependent_label span{
+    transform: rotate(0deg);
+  }
+  .inductor.flip-left .dependent_label span{
+    transform: rotate(90deg);
+  }
+  .inductor.flip-right .dependent_label span{
+    transform: rotate(-90deg);
+  }
+  .inductor.flip-bottom .dependent_label span{
+    transform: rotate(180deg);
+  }
+  .inductor .dependent_label div i{
+    color: #bb2e36;
+    font-size: 16pt;
+  }
+
+  .inductor .dependent_label div span{
+  display: inline-block;
+  }
+
+  .sidebar .content .settings_component{
+    width: 100%;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.2);
+    overflow: hidden;
+    max-height: 50px;
+    transition: 0.25s ease-in-out;
+    margin: 20px 0px;
+}
+.sidebar .content .settings_component .title{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+.sidebar .content .settings_component .title i{
+    transition: 0.5s ease-in-out;
+}
+.sidebar .content .settings_component .data{
+    padding: 10px;
+    position: relative;
+}
+.sidebar .content .settings_component .data > h6{
+    font-size: 12pt;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .content .settings_component .data ul{
+    margin-left: 40px;
+}
+.sidebar .content .settings_component .data ul li{
+    font-size: 12pt;
+    margin: 5px 0px;
+}
+.sidebar .content .settings_component .input_data{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.sidebar .content .settings_component .input_data > div{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0px 5px;
+    margin: 0px;
+    box-sizing: border-box;
+    position: relative;
+}
+.sidebar .content .settings_component .input_data > div label{
+    display: flex;
+    justify-content: flex-start;
+    text-align: left;
+    width: 100%;
+}
+.sidebar .content .settings_component .input_data input{
+    width: 100%;
+    padding: 15px 25px;
+    border: 1px solid royalblue;
+    outline: none;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+.sidebar .content .settings_component .input_data select{
+    width: 100%;
+    padding: 15px 25px;
+    border: 1px solid royalblue;
+    outline: none;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+.sidebar .content .settings_component .input_data select option{
+    color: black;
+}
+.sidebar .content .settings_component > a{
+    width: 90%;
+    height: 50px;
+    padding: 15px 25px;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 15px auto;
+    border: 1px solid royalblue;
+    transition: 0.2s ease-in-out;
+}
+.sidebar .content .settings_component > a sub{
+    align-self: flex-end;
+}
+.sidebar .content .settings_component > a:hover{
+    background: royalblue;
+}
+.sidebar .content .settings_component.active{
+    max-height: 600px;
+}
+.sidebar .content .settings_component.active .title i{
+    transform: rotate(180deg);
+}
+.sidebar .content .frequency_component{
+    width: 100%;
+    overflow: hidden;
+    transition: 0.25s ease-in-out;
+    margin: 20px 0px;
+    padding: 10PZ;
+    box-sizing: border-box;
+}
+.sidebar .content .frequency_component input{
+    width: 100%;
+    padding: 15px 25px;
+    border: 1px solid royalblue;
+    outline: none;
+    background: transparent;
+    color: white;
+    box-sizing: border-box;
+    margin: 10px 0px;
+}
+.sidebar .content .frequency_component > div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.sidebar .content .frequency_component > div a{
+    width: 45%;
+    height: 50px;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-sizing: border-box;
 }

@@ -19,28 +19,29 @@
         <div class="component_selector">
                 <div class="voltage component flip-top" type="v" orientation="vertical" heading="top">
                     <span>+</span>
-                    <h4>V</h4>
+                    <!-- <h4>V</h4> -->
                     <span>-</span>
                 </div>
                 <div class="current component flip-top" type="i" orientation="vertical" heading="top">
-                    <i class="fa-solid fa-arrow-up"></i>
+                    <i class="fa-solid fa-up-long"></i>
                 </div>
             <div class="resistance component flip-top" type="r" orientation="vertical" heading="top">
                 <h4>+</h4>
-                <h4>/\/\/\/\</h4>
+                <!-- <h4>/\/\/\/\</h4> -->
+                <h4></h4>
                 <h4>-</h4>
             </div>
-            <!-- <div class="voltage dependent component flip-top" type="v_d" orientation="vertical" heading="top">
+            <div class="voltage dependent component flip-top" type="v_d" orientation="vertical" heading="top">
                 <span>+</span>
-                <h4>V</h4>
                 <span>-</span>
             </div>
             <div class="current dependent component flip-top" type="i_d" orientation="vertical" heading="top">
-                <i class="fa-solid fa-arrow-up"></i>
+                <i class="fa-solid fa-up-long"></i>
             </div>
-            <div class="inductor component flip-top" type="i_l" orientation="vertical" heading="top">
+            <div class="inductor component flip-top" type="l" orientation="vertical" heading="top">
                 <span>+</span>
-                <img src="/assets/inductor.png" alt="">
+                <!-- <span style="transform: rotate(90deg);">o~~~~~o</span> -->
+                 <h4></h4>
                 <span>-</span>
 
             </div>
@@ -48,12 +49,12 @@
                 <span>+</span>
                 <h4><div class="vr"></div><div class="vr"></div></h4>
                 <span>-</span>
-            </div> -->
+            </div>
         </div>
     </div>
     <div class="sidebar">
         <a href="#!" id="close_sidebar" onclick="CloseSideBar()"><i class="fa-solid fa-times"></i></a>
-        <a href="#!" id="analyze_circuit_btn" onclick="AnalyzeCircuit()">Analyze Circuit</a>
+        <a href="#!" id="analyze_circuit_btn" onclick="SetAnalyzing();AnalyzeCircuit();">Analyze Circuit</a>
         <ul class="submenu">
             <li class="inputs active" onclick="ChooseSubMenu('inputs')">Inputs</li>
             <li class="outputs" onclick="ChooseSubMenu('outputs')">Outputs</li>
@@ -61,7 +62,7 @@
             <li class="errors" onclick="ChooseSubMenu('errors')">Errors</li>
         </ul>
         <div class="content">
-
+            
         </div>
         <div class="footer">
             <h5>Developed by <a href="https://mazen4dev.superabla.com/" target="_blank">Mazen Mohsen</a></h5>
@@ -89,5 +90,6 @@
     <script src="/js/sidebar.js"></script>
     <script src="/js/connection.js"></script>
     <script src="/js/analyze.js"></script>
+    <script src="/js/extras.js"></script>
 </body>
 </html>
