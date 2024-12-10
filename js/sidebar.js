@@ -81,9 +81,9 @@ function PutInputs(){
             for(let k=0;k<comps.length;k++){
                 let comp = comps[k];
                 let label = `${types[i].toUpperCase()}${k+1}`;
-                if(comp["factor"] && comp["dependent_label"]){
-                    label += ` = ${comp["factor"]}${comp["dependent_label"]}`;
-                }
+                // if(comp["factor"] && comp["dependent_label"]){
+                //     label += ` = ${comp["factor"]}${comp["dependent_label"]}`;
+                // }
                 if(comp["type"] == "v_d"){
                     content.innerHTML += `<div class="input_component data-comp-id-${components.indexOf(comp)}">
                         <div class="title" onclick="ToggleEditComponent(${components.indexOf(comp)})">
